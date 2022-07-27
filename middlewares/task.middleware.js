@@ -17,7 +17,7 @@ class TaskMiddleware {
     
     try {
       req.task = await taskValidator.get().validateAsync({
-        ...req.body,
+        ...req.params,
       });
       next();
     }
@@ -41,7 +41,7 @@ class TaskMiddleware {
     
     try {
       req.task = await taskValidator.delete().validateAsync({
-        ...req.body,
+        ...req.params,
       });
       next();
     }
