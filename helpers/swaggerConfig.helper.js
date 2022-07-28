@@ -1,6 +1,6 @@
 const swaggerJsDoc = require("swagger-jsdoc");
 
-/* -------------------------------- Doumentation of API with Swagger ----------------------------- */
+//configuraciones necesarias para la documentacion en Swagger
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: "3.0.1",
@@ -27,7 +27,6 @@ const swaggerOptions = {
   apis: ["./docs/*.yaml"],
 };
 
-// Declaration of compatibility object with Swagger tools
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 module.exports = { swaggerDocs };

@@ -1,9 +1,9 @@
-const express = require('express');
+//importacion de constantes
+const express = require("express");
 const app = express();
 
-app.use(
-  require('./user.routes'),
-  require('./task.routes')
-);
+//creacion de las rutas a usar
+app.use(require("./user.routes"), require("./task.routes"));
 
+//exportacion de la constante app
 module.exports = app;

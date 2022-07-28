@@ -1,20 +1,25 @@
+//importacion de constantes del framework Express
 const express = require("express");
-const cors = require("cors");
 const app = express();
+//asingacion del puerto
 const port = process.env.PORT || 3000;
 
-//config swagger
+//configuracion swagger
 const swaggerUi = require("swagger-ui-express");
 const { swaggerDocs } = require("./helpers/swaggerConfig.helper");
-//------
+
+//configuacion cors
+const cors = require("cors");
 app.use(cors({ origin: "*" }));
+//configuracion de Json para aceptar el req.Body
 app.use(express.json());
 
-//routes
+//rutas de la API
 app.use(require("./routes/index.routes"));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// Server running
+// Servidor Corriendo
 app.listen(port, () => {
-  console.log(`Servidor corriendo en el puerto ${port}.`);
+  console.log(`\nApi corriendo en la direccion http://localhost:${port}/. \n`);
+  console.log(`Documentacion Swagger corriendo en la direccion http://localhost:${port}/api-docs.\n`);
 });
