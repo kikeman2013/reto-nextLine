@@ -1,9 +1,9 @@
-const BD = require("../BD/bd.task.json");
+const BD = require("../BD/bd.json");
 const fs = require("fs");
 
 //Funcion para guardar a la base de datos
 const save = (BD) => {
-  fs.writeFileSync("./BD/bd.task.json", JSON.stringify(BD, null, 2), { encoding: "utf-8" });
+  fs.writeFileSync("./BD/bd.json", JSON.stringify(BD, null, 2), { encoding: "utf-8" });
 };
 
 //funcion para comprobar si existe un nombre usuario en la base de datos

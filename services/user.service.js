@@ -6,10 +6,11 @@ const { print } = require("../helpers/utils.helper");
 //clase UserService
 class UserService {
   insertUser = async (data, userId) => {
-    if (ifExist(data.userName)) return { status: false, message: "el usuario ya existe" };
+    if (ifExist(data.userName)) throw { status: false, message: "el usuario ya existe" };
     const dateCreated = new Date(Date.now()).toLocaleString();
     data = { userId: uuid(), ...data, dateCreated };
     const result = await userRepository.insertUser(data);
+    delete result.data.pass;
     print("Creo un usuario", userId);
     return result;
   };
@@ -25,14 +26,14 @@ class UserService {
   };
 
   getUser = async (data, userId) => {
-    if (!ifExistById(data.userId)) return { status: false, message: "el usuario no existe" };
+    if (!ifExistById(data.userId)) throw { status: false, message: "el usuario no existe" };
     const result = await userRepository.getUser(data);
     delete result.data[0].pass;
     print(`obtuvo la infomacion del usuario ${result.data[0].userName}`, userId);
     return result;
   };
   updateUser = async (data, userId) => {
-    if (!ifExistById(data.userId)) return { status: false, message: "el usuario no existe" };
+    if (!ifExistById(data.userId)) throw { status: false, message: "el usuario no existe" };
     const dateUpdated = new Date(Date.now()).toLocaleString();
     data = { ...data, dateUpdated };
     const result = await userRepository.updateUser(data);
@@ -41,7 +42,8 @@ class UserService {
     return result;
   };
   deleteUser = async (data, userId) => {
-    if (!ifExistById(data.userId)) return { status: false, message: "el usuario no existe" };
+    if (!ifExistById(data.userId)) throw { status: false, message: "el usuario no existe" };
+    if (data.userId === userId) throw { statusCode: 404, message: "no puedes borrarte a ti mismo" };
     const result = await userRepository.deleteUser(data);
     print(`Elimino la infomacion del usuario ${result.data.userId}`, userId);
     return result;

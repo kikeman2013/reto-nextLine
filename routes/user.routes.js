@@ -11,7 +11,7 @@ const { validateUser } = require("../middlewares/verifyUser.middleware");
 const userMiddleware = require("../middlewares/user.middleware");
 
 //routes to user
-router.post("/", [userMiddleware.insert], user.insertUser);
+router.post("/", [validateUser, userMiddleware.insert], user.insertUser);
 router.get("/", [validateUser], user.getAllUsers);
 router.get("/:userId", [validateUser, userMiddleware.get], user.getUser);
 router.put("/", [validateUser, userMiddleware.update], user.updateUser);

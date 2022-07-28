@@ -30,7 +30,7 @@ class UserRepository {
         user.userName = data.userName || user.userName;
         user.email = data.email || user.email;
         user.age = data.age || user.age;
-        user.dateUpdated || data.dateUpdated;
+        user.dateUpdated = data.dateUpdated;
 
         data = user;
       }
@@ -45,7 +45,7 @@ class UserRepository {
 
   deleteUser = async (data) => {
     BD.users = BD.users.filter((user) => user.userId !== data.userId);
-    save(BD);
+    //save(BD);
     return {
       status: true,
       message: `Usuario ${data.userId} eliminado`,

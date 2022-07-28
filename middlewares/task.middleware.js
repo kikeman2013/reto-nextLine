@@ -10,7 +10,6 @@ class TaskMiddleware {
       req.task.deliveryDate = deliveryDate;
       next();
     } catch (error) {
-      console.log(error);
       res.status(error.statusCode || 400).json(error);
     }
   };

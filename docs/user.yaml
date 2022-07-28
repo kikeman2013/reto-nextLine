@@ -1,0 +1,335 @@
+paths:
+  /User/:
+    # Crear un usuario
+    post:
+      security:
+        - userId: []
+      tags:
+        - User
+      summary: "Crear nuevo usuario"
+      description: "Un usuario registrado puede crear un nuevo usuario"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/insertUser"
+      responses:
+        "200":
+          description: "Un usuario creado "
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/insertUserRespose"
+
+                   
+        "400":
+          description: "el usuario ya existe"
+          content:
+            application/json:
+              schema:
+                example:
+                  status: false
+                  message: "el usuario ya existe"
+
+        "401":
+          $ref: "#/responses/401"
+    
+     # Actualizar un Usuario
+    put:
+      security:
+        - userId: []
+      tags:
+        - User
+      summary: "Un usuario registrado puede Actualizar un usuario"
+      description: "un usuario puede modificar la informacion de otro usuario"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/updateUser"
+      responses:
+        "200":
+          description: "El usuario fue actualizado"
+          content:
+            application/json:
+              schema:
+                $ref : "#/components/updateUserRespose"
+                  
+        "400":
+          $ref: "#/responses/400"
+
+        "401":
+          $ref: "#/responses/401"
+    # obtener todos los usuarios
+    get:
+      security:
+        - userId: []
+      tags:
+        - User
+      summary: obtener todos los usuarios
+      description: "Un usuario registrado puede obtener la informacion de todos los usuarios"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: "Lista de usuarios"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/getUserResposeList"
+                    
+        "401":
+          $ref: "#/responses/401"
+
+  
+   
+  /User/{userId}:
+  #obtener un usuario
+    get:
+      security:
+        - userId: []
+      tags:
+        - User
+      summary: 
+      description: "Un usuario registrado puede obtener la informacion de  un usuario en especifico"
+      produces:
+        - application/json
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: string
+          required: true
+
+      responses:
+        "200":
+          description: "Usuario econtrado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/getUserRespose"
+        
+        "400":
+          $ref: "#/responses/400"
+                    
+        "401":
+          $ref: "#/responses/401"
+    
+    # Eliminar un usuario
+    delete:
+      security:
+        - userId: []
+      tags:
+        - User
+      summary: Eliminar un usuario
+      description: "Un usuario registrado puede eliminar la informacion de otro usuario"
+      produces:
+        - application/json
+      parameters:
+        - name: userId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: "El Usuario se elimino"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/deleteUserRespose"
+        
+        "400":
+          $ref: "#/responses/400"
+        "401":
+          $ref: "#/responses/401"
+        "404":
+          description: "No puedes borrarte a ti mismo"
+          content:
+            application/json:
+              schema:
+                example:
+                  message: "No puedes borrarte a ti mismo"
+
+definitions:
+#examples of jsons
+  insertUser:
+    type: object
+    properties:
+      userName:
+        type: string
+        example: "Saul"
+      email:
+        type: string
+        example: "Saul@email.com"
+      pass:
+        type: string
+        example: "123fscg1"
+      age:
+        type: integer
+        example: 17
+  
+  updateUser:
+    type: object
+    properties:
+      userId:
+        type: string
+        example: "58e8343c-d7bfb-4ed4-89a55033agw26"
+      userName:
+        type: string
+        example: "Saul"
+      email:
+        type: string
+        example: "Saul@email.com"
+      age:
+        type: integer
+        example: 17
+
+responses:
+  "400":
+    description: "El usuario no existe"
+    content:
+      application/json:
+        schema:
+          example:
+            status: false
+            message: "El usuario no existe"
+          
+  "401":
+    description: "Autorización denegada. No se encuntra el Identificador de Usuario."
+    content:
+      application/json:
+        schema:
+          example:
+            status: false
+            message: "Autorización denegada. No se encuntra el Identificador de Usuario."
+
+
+components:
+  securitySchemes:
+    userId:
+      type: apiKey
+      name: userId
+      in: "header"
+  #response
+  insertUserRespose:
+    type: object
+    properties:
+      status: 
+        type: boolean
+        example: true
+      message:
+        type: string
+        example: "Usuario creado con el id: 9532c74a-cbbc-41fb-9d89-b926e7a18f4f"
+      data:
+        $ref: "#/components/createUser"
+
+  getUserRespose:
+    type: object
+    properties:
+      status: 
+        type: boolean
+        example: true
+      message:
+        type: string
+        example: "Usuario encontrados"
+      data:
+        $ref: "#/components/updateUser"
+
+  getUserResposeList:
+    type: object
+    properties:
+      status: 
+        type: boolean
+        example: true
+      message:
+        type: string
+        example: "4 Usuarios encontrados"
+      data:
+        type: array
+        items: 
+          oneOf:
+          -  $ref: "#/components/updateUser"
+          -  $ref: "#/components/updateUser"
+          -  $ref: "#/components/updateUser"
+          -  $ref: "#/components/updateUser"
+          
+  updateUserRespose:
+    type: object
+    properties:
+      status: 
+        type: boolean
+        example: true
+      message:
+        type: string
+        example: "Usuario creado con el id: 9532c74a-cbbc-41fb-9d89-b926e7a18f4f actualizado"
+      data:
+        $ref: "#/components/updateUser"
+
+  deleteUserRespose:
+    type: object
+    properties:
+      status: 
+        type: boolean
+        example: true
+      message:
+        type: string
+        example: "Usuario bbd8e7ee-d8f1-41e7-9ee0-773cdd4881e9 eliminado"
+      data:
+        type: object
+        properties:
+          userId:
+            type: string
+            example: bbd8e7ee-d8f1-41e7-9ee0-773cdd4881e9
+
+ #models
+  createUser:
+    type: object
+    properties:
+      userId:
+        type: string
+        example: 7837d5f7-010f-4v5a-86f3-eb2f21a2x563
+      userName: 
+        type: string
+        example: Saul
+      email: 
+        type: string
+        example: saul@email.com
+      age: 
+        type: number
+        example: 17
+      dateCreated: 
+        type: date
+        pattern: "/([0-9]{2})/(?:[0-9]{2})/([0-9]{4})/"
+        example: "20/05/2017"
+
+  updateUser:
+    type: object
+    properties:
+      userId:
+        type: string
+        example: 7837d5f7-010f-4v5a-86f3-eb2f21a2x563
+      userName: 
+        type: string
+        example: Saul
+      email: 
+        type: string
+        example: saul@email.com
+      age: 
+        type: number
+        example: 17
+      dateCreated: 
+        type: date
+        pattern: "/([0-9]{2})/(?:[0-9]{2})/([0-9]{4})/"
+        example: "20/05/2017"
+      dateUpdate: 
+        type: date
+        pattern: "/([0-9]{2})/(?:[0-9]{2})/([0-9]{4})/"
+        example: "23/04/2020"
+      
+
+    
+
+    

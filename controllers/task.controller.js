@@ -17,7 +17,6 @@ class TaskController {
       const result = await task.getAllTasks(userId);
       return res.status(200).json(result);
     } catch (error) {
-      console.log(error);
       return res.status(error.statusCode || 400).json(error);
     }
   };
@@ -39,7 +38,6 @@ class TaskController {
       const result = await task.updateTask(data, userId);
       return res.status(200).json(result);
     } catch (error) {
-      console.log(error);
       return res.status(error.statusCode || 400).json(error);
     }
   };

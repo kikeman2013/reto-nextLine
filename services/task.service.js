@@ -5,7 +5,7 @@ const { print } = require("../helpers/utils.helper");
 
 class TaskService {
   insertTask = async (data, userId) => {
-    if (ifExist(data.title)) return { status: false, message: "la tarea ya existe" };
+    if (ifExist(data.title)) throw { status: false, message: "la tarea ya existe" };
     const dateCreated = new Date(Date.now()).toLocaleString();
     data = { taskId: uuid(), ...data, createdByUser: userId, dateCreated };
     const result = await taskRepository.insertTask(data);
@@ -22,13 +22,13 @@ class TaskService {
     return result;
   };
   getTask = async (data, userId) => {
-    if (!ifExistById(data.taskId)) return { status: false, message: "la tarea no existe" };
+    if (!ifExistById(data.taskId)) throw { status: false, message: "la tarea no existe" };
     const result = await taskRepository.getTask(data);
     print(`obtuvo la infomacion de la tarea ${result.data[0].title}`, userId);
     return result;
   };
   updateTask = async (data, userId) => {
-    if (!ifExistById(data.taskId)) return { status: false, message: "la tarea no existe" };
+    if (!ifExistById(data.taskId)) throw { status: false, message: "la tarea no existe" };
     const dateUpdated = new Date(Date.now()).toLocaleString();
     data = { ...data, dateUpdated };
     const result = await taskRepository.updateTask(data);
@@ -36,7 +36,7 @@ class TaskService {
     return result;
   };
   deleteTask = async (data, userId) => {
-    if (!ifExistById(data.taskId)) return { status: false, message: "la tarea no existe" };
+    if (!ifExistById(data.taskId)) throw { status: false, message: "la tarea no existe" };
     const result = await taskRepository.deleteTask(data);
     print(`Elimino la infomacion de la tarea ${result.data.taskId}`, userId);
     return result;

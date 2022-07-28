@@ -20,6 +20,7 @@ const validateUser = (req, res, next) => {
         statusCode: 401,
         message: "Autorización denegada. No tienes Identificacion de Usuario.",
       };
+
     //lo guardamos en la variable global request
     req.userInfo = {
       userId,
