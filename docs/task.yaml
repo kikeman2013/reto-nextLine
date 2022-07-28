@@ -13,14 +13,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/definitions/insertUser"
+              $ref: "#/definitions/insertTaskBody"
       responses:
         "200":
           description: "Una tarea creada "
           content:
             application/json:
               schema:
-                $ref: "#/components/insertUserRespose"
+                $ref: "#/components/insertTaskRespose"
        
         "400":
           description: "la tarea ya existe"
@@ -47,7 +47,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/definitions/updateUser"
+              $ref: "#/definitions/updateTaskBody"
       responses:
         "200":
           description: "La tarea fue actualizada"
@@ -57,7 +57,7 @@ paths:
                 $ref : "#/components/updateUserRespose"
                   
         "400":
-          $ref: "#/responses/400"
+          $ref: "#/responses/400_task"
 
         "401":
           $ref: "#/responses/401"
@@ -78,14 +78,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/getUserResposeList"
+                $ref: "#/components/getTaskResposeList"
                     
         "401":
           $ref: "#/responses/401"
 
   
    
-  /User/{taskId}:
+  /Task/{taskId}:
   #obtener una tarea
     get:
       security:
@@ -109,10 +109,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/getUserRespose"
+                $ref: "#/components/getTaskRespose"
         
         "400":
-          $ref: "#/responses/400"
+          $ref: "#/responses/400_task"
                     
         "401":
           $ref: "#/responses/401"
@@ -128,7 +128,7 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: userId
+        - name: taskId
           in: path
           schema:
             type: string
@@ -142,62 +142,95 @@ paths:
                 $ref: "#/components/deleteUserRespose"
         
         "400":
-          $ref: "#/responses/400"
+          $ref: "#/responses/400_task"
 
         "401":
           $ref: "#/responses/401"
 
 definitions:
 #examples of jsons
-  insertUser:
+  insertTaskBody:
     type: object
     properties:
-      userName:
+      title:
         type: string
-        example: "Saul"
-      email:
+        example: "Salir a correr"
+      description:
         type: string
-        example: "Saul@email.com"
-      pass:
+        example: "Salir a correr al parque a las 5 de la tarde"
+      completed:
+        type: boolean
+        example: false
+      deliveryDate: 
+        type: date
+        pattern: "/([0-9]{2})/(?:[0-9]{2})/([0-9]{4})/"
+        example: "20/05/2021"
+      comments:
+        type: array
+        example: [
+          "Avisar a Mamá",
+          "Poner cronometro",
+          "Despues ir al Super"
+        ]
+      responsable: 
         type: string
-        example: "123fscg1"
-      age:
-        type: integer
-        example: 17
-  
-  updateUser:
+        example: "58b892kb-d7hb-4en4-8984-303ja768y5g6"
+      tags:
+        type: array
+        example: [
+          "workout",
+          "running",
+          "healty"
+        ]
+
+
+
+  updateTaskBody:
     type: object
     properties:
-      userId:
+      taskId:
         type: string
-        example: "58e8343c-d7bfb-4ed4-89a55033agw26"
-      userName:
+        example: "ea6c9444-65b1-4671-bf79-03654f7b248d"
+      title:
         type: string
-        example: "Saul"
-      email:
+        example: "Salir a correr"
+      description:
         type: string
-        example: "Saul@email.com"
-      age:
-        type: integer
-        example: 17
+        example: "Salir a correr al parque a las 5 de la tarde"
+      completed:
+        type: boolean
+        example: false
+      deliveryDate: 
+        type: date
+        pattern: "/([0-9]{2})/(?:[0-9]{2})/([0-9]{4})/"
+        example: "20/05/2021"
+      comments:
+        type: array
+        example: [
+          "Avisar a Mamá",
+          "Poner cronometro",
+          "Despues ir al Super"
+        ]
+      responsable: 
+        type: string
+        example: "58b892kb-d7hb-4en4-8984-303ja768y5g6"
+      tags:
+        type: array
+        example: [
+          "workout",
+          "running",
+          "healty"
+        ]
 
 responses:
-  "400":
-    description: "la tarea  no existe"
+  "400_task":
+    description: "la tarea no existe"
     content:
       application/json:
         schema:
           example:
             status: false
             message: "La tarea no existe"
-  "401":
-    description: "Autorización denegada. No se encuntra el Identificador de Usuario."
-    content:
-      application/json:
-        schema:
-          example:
-            status: false
-            message: "Autorización denegada. No se encuntra el Identificador de Usuario."
 
 
 components:
@@ -207,7 +240,7 @@ components:
       name: userId
       in: "header"
   #response
-  insertUserRespose:
+  insertTaskRespose:
     type: object
     properties:
       status: 
@@ -215,11 +248,11 @@ components:
         example: true
       message:
         type: string
-        example: "Usuario creado con el id: 9532c74a-cbbc-41fb-9d89-b926e7a18f4f"
+        example: "Tarea creada con el id: ea6c9444-65b1-4671-bf79-03654f7b248d"
       data:
-        $ref: "#/components/createUser"
+        $ref: "#/components/createTask"
 
-  getUserRespose:
+  getTaskRespose:
     type: object
     properties:
       status: 
@@ -227,11 +260,11 @@ components:
         example: true
       message:
         type: string
-        example: "Usuario encontrados"
+        example: "Tarea encontrada"
       data:
-        $ref: "#/components/updateUser"
+        $ref: "#/components/updateTask"
 
-  getUserResposeList:
+  getTaskResposeList:
     type: object
     properties:
       status: 
@@ -239,15 +272,15 @@ components:
         example: true
       message:
         type: string
-        example: "4 Usuarios encontrados"
+        example: "4 Tareas encontradas"
       data:
         type: array
         items: 
           oneOf:
-          -  $ref: "#/components/updateUser"
-          -  $ref: "#/components/updateUser"
-          -  $ref: "#/components/updateUser"
-          -  $ref: "#/components/updateUser"
+          -  $ref: "#/components/updateTask"
+          -  $ref: "#/components/updateTask"
+          -  $ref: "#/components/updateTask"
+          -  $ref: "#/components/updateTask"
           
   updateUserRespose:
     type: object
@@ -257,9 +290,9 @@ components:
         example: true
       message:
         type: string
-        example: "Usuario creado con el id: 9532c74a-cbbc-41fb-9d89-b926e7a18f4f actualizado"
+        example: "Tarea creada con el id: 9532c74a-cbbc-41fb-9d89-b926e7a18f4f actualizado"
       data:
-        $ref: "#/components/updateUser"
+        $ref: "#/components/updateTask"
 
   deleteUserRespose:
     type: object
@@ -269,7 +302,7 @@ components:
         example: true
       message:
         type: string
-        example: "Usuario bbd8e7ee-d8f1-41e7-9ee0-773cdd4881e9 eliminado"
+        example: "Tarea bbd8e7ee-d8f1-41e7-9ee0-773cdd4881e9 eliminado"
       data:
         type: object
         properties:
@@ -278,41 +311,83 @@ components:
             example: bbd8e7ee-d8f1-41e7-9ee0-773cdd4881e9
 
  #models
-  createUser:
+  createTask:
     type: object
     properties:
-      userId:
+      taskId:
         type: string
-        example: 7837d5f7-010f-4v5a-86f3-eb2f21a2x563
-      userName: 
+        example: "ea6c9444-65b1-4671-bf79-03654f7b248d"
+      title:
         type: string
-        example: Saul
-      email: 
+        example: "Salir a correr"
+      description:
         type: string
-        example: saul@email.com
-      age: 
-        type: number
-        example: 17
+        example: "Salir a correr al parque a las 5 de la tarde"
+      completed:
+        type: boolean
+        example: false
+      deliveryDate: 
+        type: date
+        pattern: "/([0-9]{2})/(?:[0-9]{2})/([0-9]{4})/"
+        example: "20/05/2021"
+      comments:
+        type: array
+        example: [
+          "Avisar a Mamá",
+          "Poner cronometro",
+          "Despues ir al Super"
+        ]
+      responsable: 
+        type: string
+        example: "58b892kb-d7hb-4en4-8984-303ja768y5g6"
+      tags:
+        type: array
+        example: [
+          "workout",
+          "running",
+          "healty"
+        ]
       dateCreated: 
         type: date
         pattern: "/([0-9]{2})/(?:[0-9]{2})/([0-9]{4})/"
         example: "20/05/2017"
 
-  updateUser:
+  updateTask:
     type: object
     properties:
-      userId:
+      taskId:
         type: string
-        example: 7837d5f7-010f-4v5a-86f3-eb2f21a2x563
-      userName: 
+        example: "ea6c9444-65b1-4671-bf79-03654f7b248d"
+      title:
         type: string
-        example: Saul
-      email: 
+        example: "Salir a correr"
+      description:
         type: string
-        example: saul@email.com
-      age: 
-        type: number
-        example: 17
+        example: "Salir a correr al parque a las 5 de la tarde"
+      completed:
+        type: boolean
+        example: false
+      deliveryDate: 
+        type: date
+        pattern: "/([0-9]{2})/(?:[0-9]{2})/([0-9]{4})/"
+        example: "20/05/2021"
+      comments:
+        type: array
+        example: [
+          "Avisar a Mamá",
+          "Poner cronometro",
+          "Despues ir al Super"
+        ]
+      responsable: 
+        type: string
+        example: "58b892kb-d7hb-4en4-8984-303ja768y5g6"
+      tags:
+        type: array
+        example: [
+          "workout",
+          "running",
+          "healty"
+        ]
       dateCreated: 
         type: date
         pattern: "/([0-9]{2})/(?:[0-9]{2})/([0-9]{4})/"

@@ -13,7 +13,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/definitions/insertUser"
+              $ref: "#/definitions/insertUserBody"
       responses:
         "200":
           description: "Un usuario creado "
@@ -48,7 +48,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/definitions/updateUser"
+              $ref: "#/definitions/updateUserBody"
       responses:
         "200":
           description: "El usuario fue actualizado"
@@ -145,7 +145,7 @@ paths:
           $ref: "#/responses/400"
         "401":
           $ref: "#/responses/401"
-        "404":
+        "410":
           description: "No puedes borrarte a ti mismo"
           content:
             application/json:
@@ -155,7 +155,7 @@ paths:
 
 definitions:
 #examples of jsons
-  insertUser:
+  insertUserBody:
     type: object
     properties:
       userName:
@@ -171,7 +171,7 @@ definitions:
         type: integer
         example: 17
   
-  updateUser:
+  updateUserBody:
     type: object
     properties:
       userId:

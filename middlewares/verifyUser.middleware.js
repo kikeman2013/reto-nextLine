@@ -30,7 +30,6 @@ const validateUser = (req, res, next) => {
     return res.status(error.statusCode || 401).json({
       status: false,
       message: "Autorización denegada. No tienes Identificacion de Usuario.",
-      data: null,
     });
   }
 };
