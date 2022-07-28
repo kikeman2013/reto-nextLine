@@ -15,8 +15,7 @@ router.post("/", [userMiddleware.insert], user.insertUser);
 router.get("/", [validateUser], user.getAllUsers);
 router.get("/:userId", [validateUser, userMiddleware.get], user.getUser);
 router.put("/", [validateUser, userMiddleware.update], user.updateUser);
-router.delete("/:userId",[validateUser, userMiddleware.delete],user.deleteUser
-);
+router.delete("/:userId", [validateUser, userMiddleware.delete], user.deleteUser);
 
 app.use("/api/user", router);
 module.exports = app;

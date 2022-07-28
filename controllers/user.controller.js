@@ -38,6 +38,7 @@ class UserController {
       const result = await user.updateUser(data, userId);
       return res.status(200).json(result);
     } catch (error) {
+      console.log(error);
       return res.status(error.statusCode || 400).json(error);
     }
   };

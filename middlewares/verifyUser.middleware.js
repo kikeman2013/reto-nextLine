@@ -6,8 +6,7 @@ const validateUser = (req, res, next) => {
     if (!req.headers.userid)
       throw {
         statusCode: 401,
-        message:
-          "Autorización denegada. No se encuntra el Identificador de Usuario.",
+        message: "Autorización denegada. No se encuntra el Identificador de Usuario.",
       };
 
     // obtener userId
